@@ -1,7 +1,7 @@
 "use server";
 
 import bcrypt from "bcryptjs";
-import { revalidatePath } from "next/cache";
+import { revalidatePath } from "next/cache"; 
 import { z } from "zod";
 import { auth } from "@/lib/auth";
 import { connectDB } from "@/lib/db";
