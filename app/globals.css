@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 @custom-variant dark (&:where(.dark, .dark *));
+@custom-variant xs (@media (min-width: 400px));
 
 :root {
   --background: 0 0% 100%;
@@ -86,11 +87,23 @@
 @layer base {
   * {
     border-color: hsl(var(--border));
+    /* Prevent double-tap zoom on interactive elements. */
+    -webkit-tap-highlight-color: transparent;
   }
   body {
     background-color: hsl(var(--background));
     color: hsl(var(--foreground));
     font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+    /* Respect iPhone notch / home-bar safe area. */
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+  button, a, [role="button"] {
+    touch-action: manipulation;
+  }
+  /* Ensure minimum tap-target size for interactive elements. */
+  button:not([class*="size-"]) {
+    min-height: 44px;
   }
 }
 

@@ -190,12 +190,12 @@ export function MCGame({ slug, difficulty, content, isAuthed, config = {} }: MCG
                   })}
                 </div>
               ) : (
-                <div className="grid gap-3 sm:grid-cols-2">
+                <div className="grid gap-2 xs:grid-cols-2 sm:gap-3">
                   {options.map((opt) => {
                     const state = picked ? (opt === answer ? "correct" : opt === picked ? "wrong" : "idle") : "idle";
                     return (
                       <button key={opt} onClick={() => pick(opt)} disabled={!!picked}
-                        className={cn("flex items-center justify-between rounded-lg border-2 px-4 py-3 text-left font-medium transition-all disabled:cursor-default",
+                        className={cn("flex min-h-[3rem] items-center justify-between rounded-lg border-2 px-3 py-2.5 text-left text-sm font-medium transition-all disabled:cursor-default sm:px-4 sm:py-3 sm:text-base",
                           state === "idle" && "hover:border-primary hover:bg-accent",
                           state === "correct" && "border-emerald-500 bg-emerald-500/10",
                           state === "wrong" && "border-destructive bg-destructive/10"

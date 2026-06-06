@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { Trophy, Flame, Zap, ArrowRight, Gamepad2, Home, Play } from "lucide-react";
+import { Trophy, Flame, Zap, Gamepad2, Home, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
@@ -11,25 +11,12 @@ import { Confetti } from "./confetti";
 import type { GameSession } from "./use-game-session";
 
 export interface SessionInfo {
-  /** Current session (1-based). */
   current: number;
-  /** Total sessions in this pool. */
   total: number;
-  /** Total questions in the pool. */
   poolSize: number;
-  /** Questions shown so far this cycle (for the subtitle). */
   shownSoFar: number;
 }
 
-/**
- * Shared game wrapper: progress bar + streak/XP header during play, and the
- * session-complete result screen.
- *
- * Result screen shows three choices:
- *   1. Continue → next session  (if onNextSession is provided)
- *   2. More games               → categoryHref
- *   3. Browse all games         → /games
- */
 export function GameShell({
   session,
   categoryHref,
@@ -41,7 +28,6 @@ export function GameShell({
   session: GameSession;
   categoryHref: string;
   isAuthed: boolean;
-  /** Pass to unlock the "Continue → Session N" button. */
   onNextSession?: () => void;
   sessionInfo?: SessionInfo;
   children: React.ReactNode;
@@ -52,44 +38,37 @@ export function GameShell({
   if (session.finished) {
     const pct = session.accuracy;
     const medal = pct >= 90 ? "🥇" : pct >= 70 ? "🥈" : pct >= 50 ? "🥉" : "📖";
-    const nextSession = si ? si.current + 1 : undefined;
-
-    // Has the pool cycled? (shown all questions)
     const poolDone = si && si.shownSoFar >= si.poolSize;
+    const nextSession = si ? si.current + 1 : undefined;
     const nextLabel = poolDone
-      ? `Restart (all ${si?.poolSize} questions done!)`
+      ? "Restart — reshuffled!"
       : nextSession
       ? `Continue → Session ${nextSession}`
       : "Play again";
-
-    // Which questions are next?
-    const nextRange =
-      si && !poolDone
-        ? `Questions ${si.shownSoFar + 1}–${Math.min(si.shownSoFar + 10, si.poolSize)}`
-        : si && poolDone
-        ? "Starting fresh — reshuffled!"
-        : undefined;
+    const nextRange = si && !poolDone
+      ? `Q ${si.shownSoFar + 1}–${Math.min(si.shownSoFar + 10, si.poolSize)}`
+      : si && poolDone ? "All done! 🔄" : undefined;
 
     return (
       <>
         <Confetti />
         <Card className="overflow-hidden">
           {/* Header band */}
-          <div className="bg-gradient-to-r from-emerald-500/20 to-sky-500/20 border-b px-6 py-4 text-center">
+          <div className="border-b bg-gradient-to-r from-emerald-500/20 to-sky-500/20 px-4 py-5 text-center sm:px-6">
             <span className="text-4xl">{medal}</span>
-            <h2 className="mt-1 text-xl font-extrabold">
+            <h2 className="mt-1 text-lg font-extrabold sm:text-xl">
               {si ? `Session ${si.current} Complete!` : "Round complete!"}
             </h2>
             {si && (
-              <p className="text-xs text-muted-foreground mt-0.5">
+              <p className="mt-0.5 text-xs text-muted-foreground">
                 {si.shownSoFar} of {si.poolSize} questions seen this cycle
               </p>
             )}
           </div>
 
-          <CardContent className="py-8 space-y-6">
-            {/* Score stats */}
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <CardContent className="space-y-5 px-4 py-6 sm:px-6">
+            {/* Stats — 2-col on mobile, 4-col on sm */}
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-3">
               <Stat label="Correct" value={`${session.correct}/${session.total}`} />
               <Stat label="Accuracy" value={`${pct}%`} />
               <Stat label="Best streak" value={String(session.bestStreak)} />
@@ -97,43 +76,42 @@ export function GameShell({
             </div>
 
             {!isAuthed && (
-              <p className="text-center text-sm text-muted-foreground rounded-lg border border-dashed p-3">
-                <strong>Log in</strong> to save your XP and track progress across sessions.
+              <p className="rounded-lg border border-dashed p-3 text-center text-sm text-muted-foreground">
+                <strong>Log in</strong> to save XP and track progress.
               </p>
             )}
 
             {/* Actions */}
-            <div className="space-y-3">
-              {/* Primary: Next session */}
+            <div className="space-y-2.5">
+              {/* Primary: Continue */}
               {onNextSession && (
                 <Button
-                  className="w-full h-12 text-base"
-                  onClick={() => { onNextSession(); }}
+                  className="h-12 w-full text-base"
+                  onClick={onNextSession}
                   disabled={session.saving}
                 >
-                  <Play className="size-4" />
-                  {nextLabel}
+                  <Play className="size-4 shrink-0" />
+                  <span className="truncate">{nextLabel}</span>
                   {nextRange && (
-                    <Badge variant="secondary" className="ml-2 text-xs">
+                    <Badge variant="secondary" className="ml-2 shrink-0 text-xs">
                       {nextRange}
                     </Badge>
                   )}
                 </Button>
               )}
 
-              {/* Secondary: More games in same category */}
+              {/* Secondary: More games */}
               <Button variant="outline" className="w-full" asChild>
                 <Link href={categoryHref}>
-                  <Gamepad2 className="size-4" />
+                  <Gamepad2 className="size-4 shrink-0" />
                   More games in this category
-                  <ArrowRight className="size-4" />
                 </Link>
               </Button>
 
-              {/* Tertiary: Browse all games */}
+              {/* Tertiary: All games */}
               <Button variant="ghost" className="w-full text-muted-foreground" asChild>
                 <Link href="/games">
-                  <Home className="size-4" />
+                  <Home className="size-4 shrink-0" />
                   Browse all games
                 </Link>
               </Button>
@@ -146,25 +124,26 @@ export function GameShell({
 
   /* ── Active play UI ── */
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
+      {/* Header bar — compact on mobile */}
       <div className="flex items-center justify-between text-sm">
         <span className="text-muted-foreground">
           {si
-            ? `Q ${session.answered + 1} / ${session.total}  ·  Session ${si.current}`
+            ? <><span className="font-medium">S{si.current}</span> · Q {session.answered + 1}/{session.total}</>
             : `${session.answered} / ${session.total}`}
         </span>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5">
           {session.streak > 1 && (
             <span className="flex items-center gap-1 font-medium text-orange-500">
-              <Flame className="size-4" /> {session.streak}
+              <Flame className="size-3.5" /> {session.streak}
             </span>
           )}
           <span className="flex items-center gap-1 font-medium text-primary">
-            <Zap className="size-4" /> {session.xp} XP
+            <Zap className="size-3.5" /> {session.xp}
           </span>
         </div>
       </div>
-      <Progress value={progress} />
+      <Progress value={progress} className="h-1.5" />
       {children}
     </div>
   );
@@ -172,8 +151,8 @@ export function GameShell({
 
 function Stat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-lg border bg-card p-3 text-center">
-      <p className="text-lg font-bold">{value}</p>
+    <div className="rounded-lg border bg-card p-2.5 text-center sm:p-3">
+      <p className="text-base font-bold sm:text-lg">{value}</p>
       <p className="text-xs text-muted-foreground">{label}</p>
     </div>
   );

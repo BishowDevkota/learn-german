@@ -185,9 +185,9 @@ export function GameEditor({
                     <Button variant="ghost" size="icon" onClick={() => removeItem(index)} aria-label="Delete"><Trash2 className="size-4 text-destructive" /></Button>
                   </div>
                 </div>
-                <div className="grid gap-4 sm:grid-cols-2">
+                <div className="grid gap-3 sm:grid-cols-2 sm:gap-4">
                   {def.fields.map((field) => (
-                    <div key={field.name} className={field.type === "textarea" || field.type === "image" || field.type === "audio" ? "sm:col-span-2 space-y-1.5" : "space-y-1.5"}>
+                    <div key={field.name} className={field.type === "textarea" || field.type === "image" || field.type === "audio" ? "space-y-1.5 sm:col-span-2" : "space-y-1.5"}>
                       <Label className="text-xs">
                         {field.label}{field.required ? " *" : ""}
                         {field.help ? <span className="ml-1 font-normal text-muted-foreground">— {field.help}</span> : null}

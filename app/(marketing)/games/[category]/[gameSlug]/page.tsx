@@ -57,24 +57,24 @@ export default async function GamePlayPage({
   const implemented = isGameImplemented(gameSlug);
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-8">
+    <div className="mx-auto max-w-3xl px-3 py-5 sm:px-4 sm:py-8">
       <Link
         href={`/games/${def.category}`}
-        className="mb-6 inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
+        className="mb-4 inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground sm:mb-6"
       >
         <ArrowLeft className="size-4" /> {cat?.title ?? "Back"}
       </Link>
 
-      <div className="mb-6 flex items-center gap-4">
-        <div className={cn("grid size-12 shrink-0 place-items-center rounded-xl bg-gradient-to-br text-white", cat?.gradient ?? "from-slate-500 to-slate-700")}>
-          <Icon name={def.icon} className="size-6" />
+      <div className="mb-4 flex items-center gap-3 sm:mb-6 sm:gap-4">
+        <div className={cn("grid size-10 shrink-0 place-items-center rounded-xl bg-gradient-to-br text-white sm:size-12", cat?.gradient ?? "from-slate-500 to-slate-700")}>
+          <Icon name={def.icon} className="size-5 sm:size-6" />
         </div>
         <div className="min-w-0">
-          <div className="flex flex-wrap items-center gap-2">
-            <h1 className="text-2xl font-bold">{def.title}</h1>
-            <Badge variant="secondary" className="capitalize">{def.difficulty}</Badge>
+          <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+            <h1 className="text-lg font-bold sm:text-2xl">{def.title}</h1>
+            <Badge variant="secondary" className="capitalize text-xs">{def.difficulty}</Badge>
           </div>
-          <p className="text-sm text-muted-foreground">{def.description}</p>
+          <p className="text-xs text-muted-foreground sm:text-sm">{def.description}</p>
         </div>
       </div>
 

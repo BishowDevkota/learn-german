@@ -1,8 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(node -e \"for \\(const p of ['next-auth','mongoose','zod','motion','recharts','next-cloudinary','sonner','next-themes']\\) { try { console.log\\(p, require\\(p+'/package.json'\\).version\\) } catch\\(e\\){ console.log\\(p,'ERR',e.message.split\\('\\\\n'\\)[0]\\) } }\")",
-      "Bash(node -e \"const z=require\\('zod'\\); console.log\\('z.email', typeof z.email, '| z.string\\(\\).email', typeof z.string\\(\\).email\\)\")"
-    ]
-  }
-}

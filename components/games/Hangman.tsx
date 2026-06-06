@@ -93,10 +93,10 @@ export default function Hangman({ slug, difficulty, content, isAuthed }: GameCom
         {lost && <p className="text-center font-semibold text-destructive">The word was: {word}</p>}
         {won && <p className="text-center font-semibold text-emerald-500">Excellent! 🎉</p>}
         {!done ? (
-          <div className="flex flex-wrap justify-center gap-1.5">
+          <div className="flex flex-wrap justify-center gap-1">
             {ALPHABET.map((letter) => (
               <button key={letter} onClick={() => guess(letter)} disabled={guessed.has(letter)}
-                className={cn("h-9 w-9 rounded-lg border text-sm font-bold uppercase transition-all",
+                className={cn("h-8 w-8 rounded-lg border text-xs font-bold uppercase transition-all sm:h-9 sm:w-9 sm:text-sm",
                   guessed.has(letter)
                     ? (word.includes(letter) ? "bg-emerald-500/20 text-emerald-600 border-emerald-500" : "opacity-25")
                     : "hover:border-primary hover:bg-accent"

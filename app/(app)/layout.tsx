@@ -1,5 +1,5 @@
 import { Navbar } from "@/components/site/navbar";
-import { Footer } from "@/components/site/footer";
+import { MobileBottomNav } from "@/components/site/mobile-bottom-nav";
 import { requireUser } from "@/lib/guards";
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
@@ -7,8 +7,8 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   return (
     <>
       <Navbar />
-      <main className="flex-1">{children}</main>
-      <Footer />
+      <main className="flex-1 pb-20 md:pb-0">{children}</main>
+      <MobileBottomNav />
     </>
   );
 }

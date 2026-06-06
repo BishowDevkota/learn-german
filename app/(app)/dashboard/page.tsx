@@ -65,11 +65,11 @@ export default async function DashboardPage() {
   return (
     <div className="mx-auto max-w-6xl space-y-8 px-4 py-10">
       <div>
-        <h1 className="text-3xl font-bold">Welcome back, {user.name.split(" ")[0]} 👋</h1>
+        <h1 className="text-2xl font-bold sm:text-3xl">Welcome back, {user.name.split(" ")[0]} 👋</h1>
         <p className="text-muted-foreground">Here&apos;s your progress so far.</p>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-5">
         <StatCard label="Total XP" value={formatNumber(user.xp)} icon={Zap} accent="text-amber-500" />
         <StatCard label="Level" value={user.level} icon={TrendingUp} sub={`#${rank} globally`} />
         <StatCard label="Day Streak" value={user.streak} icon={Flame} accent="text-orange-500" />

@@ -78,16 +78,16 @@ export default function GermanWordle({ slug, difficulty, content, isAuthed }: Ga
       sessionInfo={{ current: session, total: totalSessions, poolSize, shownSoFar }}
       onNextSession={handleNextSession}>
       <div className="space-y-4">
-        <div className="mx-auto w-fit space-y-1.5">
+        <div className="mx-auto w-fit space-y-1">
           {rows.map((row, ri) => {
             const states = ri < guesses.length ? evaluate(row.padEnd(5), answer) : [];
             return (
-              <div key={ri} className="flex gap-1.5">
+              <div key={ri} className="flex gap-1">
                 {Array.from({ length: 5 }, (_, ci) => {
                   const letter = row[ci] ?? "";
                   const state = states[ci] ?? "empty";
                   return (
-                    <div key={ci} className={cn("flex h-14 w-14 items-center justify-center rounded-lg border-2 text-xl font-extrabold uppercase transition-all",
+                    <div key={ci} className={cn("flex h-11 w-11 items-center justify-center rounded-lg border-2 text-base font-extrabold uppercase transition-all sm:h-14 sm:w-14 sm:text-xl",
                       state === "correct" && "bg-emerald-500 border-emerald-500 text-white",
                       state === "present" && "bg-amber-500 border-amber-500 text-white",
                       state === "absent" && ri < guesses.length && "bg-muted border-muted text-muted-foreground",
@@ -109,20 +109,20 @@ export default function GermanWordle({ slug, difficulty, content, isAuthed }: Ga
           </div>
         )}
         {!done && (
-          <div className="space-y-1.5">
+          <div className="space-y-1">
             {KEYBOARD.map((row, ri) => (
-              <div key={ri} className="flex justify-center gap-1">
-                {ri === 2 && <Button size="sm" onClick={submit} className="px-3 text-xs">ENTER</Button>}
+              <div key={ri} className="flex justify-center gap-0.5 sm:gap-1">
+                {ri === 2 && <Button size="sm" onClick={submit} className="h-8 px-2 text-[10px] sm:h-9 sm:px-3 sm:text-xs">ENTER</Button>}
                 {row.split("").map((l) => (
                   <button key={l} onClick={() => press(l)}
-                    className={cn("h-9 w-8 rounded border text-xs font-bold uppercase",
+                    className={cn("h-8 w-7 rounded border text-[10px] font-bold uppercase sm:h-9 sm:w-8 sm:text-xs",
                       letterStates[l] === "correct" && "bg-emerald-500 text-white border-emerald-500",
                       letterStates[l] === "present" && "bg-amber-500 text-white border-amber-500",
                       letterStates[l] === "absent" && "bg-muted text-muted-foreground",
                       !letterStates[l] && "bg-card hover:bg-accent"
                     )}>{l}</button>
                 ))}
-                {ri === 2 && <button onClick={backspace} className="h-9 w-10 rounded border bg-card hover:bg-accent flex items-center justify-center"><Delete className="size-3.5" /></button>}
+                {ri === 2 && <button onClick={backspace} className="flex h-8 w-9 items-center justify-center rounded border bg-card hover:bg-accent sm:h-9 sm:w-10"><Delete className="size-3.5" /></button>}
               </div>
             ))}
           </div>
